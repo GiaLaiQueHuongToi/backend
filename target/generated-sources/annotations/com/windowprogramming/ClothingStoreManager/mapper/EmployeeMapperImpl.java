@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.2 (Oracle Corporation)"
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.15 (Ubuntu)"
 )
 @Component
 public class EmployeeMapperImpl implements EmployeeMapper {
@@ -23,9 +23,10 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         Employee.EmployeeBuilder employee = Employee.builder();
 
         employee.name( employeeCreationRequest.getName() );
-        employee.phoneNumber( employeeCreationRequest.getPhoneNumber() );
         employee.citizenId( employeeCreationRequest.getCitizenId() );
+        employee.jobTitle( employeeCreationRequest.getJobTitle() );
         employee.salary( employeeCreationRequest.getSalary() );
+        employee.phoneNumber( employeeCreationRequest.getPhoneNumber() );
         employee.email( employeeCreationRequest.getEmail() );
         employee.dateOfBirth( employeeCreationRequest.getDateOfBirth() );
         employee.address( employeeCreationRequest.getAddress() );
@@ -47,6 +48,7 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         employeeResponse.name( employee.getName() );
         employeeResponse.phoneNumber( employee.getPhoneNumber() );
         employeeResponse.citizenId( employee.getCitizenId() );
+        employeeResponse.jobTitle( employee.getJobTitle() );
         employeeResponse.salary( employee.getSalary() );
         employeeResponse.email( employee.getEmail() );
         employeeResponse.dateOfBirth( employee.getDateOfBirth() );
@@ -70,14 +72,17 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         if ( employeeUpdateRequest.getName() != null ) {
             employee.setName( employeeUpdateRequest.getName() );
         }
-        if ( employeeUpdateRequest.getPhoneNumber() != null ) {
-            employee.setPhoneNumber( employeeUpdateRequest.getPhoneNumber() );
-        }
         if ( employeeUpdateRequest.getCitizenId() != null ) {
             employee.setCitizenId( employeeUpdateRequest.getCitizenId() );
         }
+        if ( employeeUpdateRequest.getJobTitle() != null ) {
+            employee.setJobTitle( employeeUpdateRequest.getJobTitle() );
+        }
         if ( employeeUpdateRequest.getSalary() != null ) {
             employee.setSalary( employeeUpdateRequest.getSalary() );
+        }
+        if ( employeeUpdateRequest.getPhoneNumber() != null ) {
+            employee.setPhoneNumber( employeeUpdateRequest.getPhoneNumber() );
         }
         if ( employeeUpdateRequest.getEmail() != null ) {
             employee.setEmail( employeeUpdateRequest.getEmail() );
