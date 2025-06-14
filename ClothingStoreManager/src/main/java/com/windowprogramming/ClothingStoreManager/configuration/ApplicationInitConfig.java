@@ -45,7 +45,7 @@ public class ApplicationInitConfig {
     @ConditionalOnProperty(
             prefix = "spring",
             value = "datasource.driverClassName",
-            havingValue = "com.mysql.cj.jdbc.Driver")
+            havingValue = "org.postgresql.Driver")
     public ApplicationRunner applicationRunner() {
         return args -> {
             if (!roleRepository.existsById(RoleName.ADMIN)) {
