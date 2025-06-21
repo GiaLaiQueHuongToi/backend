@@ -16,4 +16,6 @@ public interface AuthenticationService {
     UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     List<UserResponse> getAllUsers();
     String getOauthAccessTokenGoogle(String code);
+    String getAccessToken(Long userId);
+    void storeTokens(Long userId, String accessToken, String refreshToken);
 }

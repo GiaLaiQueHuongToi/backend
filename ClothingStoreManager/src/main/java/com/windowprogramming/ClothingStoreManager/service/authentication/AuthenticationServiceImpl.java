@@ -7,6 +7,7 @@ import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
 import com.windowprogramming.ClothingStoreManager.entity.Employee;
 import com.windowprogramming.ClothingStoreManager.entity.Role;
+import com.windowprogramming.ClothingStoreManager.entity.Token;
 import com.windowprogramming.ClothingStoreManager.entity.User;
 import com.windowprogramming.ClothingStoreManager.enums.RoleName;
 import com.windowprogramming.ClothingStoreManager.exception.AppException;
@@ -16,6 +17,7 @@ import com.windowprogramming.ClothingStoreManager.mapper.RoleMapper;
 import com.windowprogramming.ClothingStoreManager.mapper.UserMapper;
 import com.windowprogramming.ClothingStoreManager.repository.EmployeeRepository;
 import com.windowprogramming.ClothingStoreManager.repository.RoleRepository;
+import com.windowprogramming.ClothingStoreManager.repository.TokenRepository;
 import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
 import com.windowprogramming.ClothingStoreManager.utils.JWTUtils;
 import lombok.AccessLevel;
@@ -35,6 +37,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     UserRepository userRepository;
     RoleRepository roleRepository;
     EmployeeRepository employeeRepository;
+    TokenRepository tokenRepository;
 
     PasswordEncoder passwordEncoder;
     JWTUtils jwtUtils;
@@ -218,11 +222,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(response);
 
+            String accessToken = null;
+            String refreshToken = null;
+
             if (rootNode.has("access_token")) {
-                String accessToken = rootNode.get("access_token").asText();
+                accessToken = rootNode.get("access_token").asText();
                 System.out.println("Access Token: " + accessToken);
             } else {
                 System.out.println("Access token not found in response: " + response);
+                return response;
+            }
+
+            if (rootNode.has("refresh_token")) {
+                refreshToken = rootNode.get("refresh_token").asText();
+                System.out.println("Refresh Token: " + refreshToken);
+
+                // Get the current authenticated user
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                User currUser = (User) authentication.getPrincipal();
+                if (currUser != null) {
+                    // Store both tokens
+                    storeTokens(currUser.getId(), accessToken, refreshToken);
+                } else {
+                    System.out.println("Cannot store tokens: No authenticated user found");
+                }
+            } else {
+                System.out.println("Refresh token not found in response: " + response);
             }
         } catch (Exception e) {
             System.err.println("Error parsing OAuth response: " + e.getMessage());
@@ -247,5 +272,71 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         employee.setAddress(user.getAddress());
         employee.setArea(user.getArea());
         employee.setWard(user.getWard());
+    }
+
+
+
+    @Override
+    public String getAccessToken(Long userId) {
+        Token token = tokenRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.TOKEN_NOT_FOUND));
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // Check if token is still valid (less than 1 hour old)
+        if (token.getCreatedAt().plusHours(1).isAfter(now)) {
+            return token.getAccessToken();
+        }
+
+        // Token expired, refresh it
+        try {
+            String newTokens = refreshGoogleToken(token.getRefreshToken());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(newTokens);
+
+            if (rootNode.has("access_token")) {
+                String newAccessToken = rootNode.get("access_token").asText();
+
+                // Update token
+                token.setAccessToken(newAccessToken);
+                token.setCreatedAt(LocalDateTime.now());
+                tokenRepository.save(token);
+
+                return newAccessToken;
+            } else {
+                throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
+            }
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
+        }
+    }
+
+    @Override
+    public void storeTokens(Long userId, String accessToken, String refreshToken) {
+        Token token = tokenRepository.findByUserId(userId)
+                .orElse(Token.builder().userId(userId).build());
+
+        token.setAccessToken(accessToken);
+        token.setRefreshToken(refreshToken);
+        token.setCreatedAt(LocalDateTime.now());
+
+        tokenRepository.save(token);
+    }
+
+    private String refreshGoogleToken(String refreshToken) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("refresh_token", refreshToken);
+        params.add("grant_type", "refresh_token");
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, httpHeaders);
+
+        String url = "https://oauth2.googleapis.com/token";
+        return restTemplate.postForObject(url, requestEntity, String.class);
     }
 }

@@ -107,7 +107,11 @@ public enum ErrorCode {
     //    File error 7xxx
     FILE_SIZE_TOO_LARGE(7001, HttpStatus.BAD_REQUEST, "Max file size is 2MB"),
     FILE_PATTERN_NOT_ALLOWED(7002, HttpStatus.BAD_REQUEST, "Only jpg, png, gif, bmp files are allowed"),
-    FILE_UPLOAD_FAILED(7003, HttpStatus.INTERNAL_SERVER_ERROR, "The file name should not contain any whitespace, must end with one of the following extensions: .jpg, .png, .gif, or .bmp, No additional characters should appear after the extension");
+    FILE_UPLOAD_FAILED(7003, HttpStatus.INTERNAL_SERVER_ERROR, "The file name should not contain any whitespace, must end with one of the following extensions: .jpg, .png, .gif, or .bmp, No additional characters should appear after the extension"),
+
+    TOKEN_NOT_FOUND(8000,HttpStatus.NOT_FOUND, "No token found for user"),
+    TOKEN_EXPIRED(8001, HttpStatus.UNAUTHORIZED, "Token expired"),
+    REFRESH_TOKEN_FAILED(8002, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to refresh token");
 
 
     final Integer code;

@@ -1,5 +1,6 @@
 package com.windowprogramming.ClothingStoreManager.controller;
 
+import com.cloudinary.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.ChangePasswordRequest;
@@ -9,6 +10,7 @@ import com.windowprogramming.ClothingStoreManager.dto.request.authentication.Use
 import com.windowprogramming.ClothingStoreManager.dto.response.ApiResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
+import com.windowprogramming.ClothingStoreManager.entity.User;
 import com.windowprogramming.ClothingStoreManager.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -20,6 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +32,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @EnableMethodSecurity
 @RestController
@@ -127,7 +133,20 @@ public class AuthenticationController {
         authenticationService.getOauthAccessTokenGoogle(code);
     }
 
+    @GetMapping("/access-token")
+    public ApiResponse<Map<String, String>> getAccessToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
 
+        String accessToken = authenticationService.getAccessToken(user.getId());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", accessToken);
+
+        return ApiResponse.<Map<String, String>>builder()
+                .data(response)
+                .build();
+    }
 
 
 }
