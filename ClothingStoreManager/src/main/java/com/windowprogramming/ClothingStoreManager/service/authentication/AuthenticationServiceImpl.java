@@ -1,5 +1,7 @@
 package com.windowprogramming.ClothingStoreManager.service.authentication;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.*;
 import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
@@ -19,11 +21,19 @@ import com.windowprogramming.ClothingStoreManager.utils.JWTUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +42,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @NonFinal
+    @Value("${google.client.id}")
+    private String clientId;
+
+    @NonFinal
+    @Value("${google.client.secret}")
+    private String clientSecret;
+
     UserRepository userRepository;
     RoleRepository roleRepository;
     EmployeeRepository employeeRepository;
@@ -175,6 +193,42 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userResponses.add(buildUserResponse(user));
         }
         return userResponses;
+    }
+
+    @Override
+    public String getOauthAccessTokenGoogle(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("redirect_uri", "http://localhost:8080/auth/grantcode");
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("scope", "openid");
+        params.add("grant_type", "authorization_code");
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, httpHeaders);
+
+        String url = "https://oauth2.googleapis.com/token";
+        String response = restTemplate.postForObject(url, requestEntity, String.class);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response);
+
+            if (rootNode.has("access_token")) {
+                String accessToken = rootNode.get("access_token").asText();
+                System.out.println("Access Token: " + accessToken);
+            } else {
+                System.out.println("Access token not found in response: " + response);
+            }
+        } catch (Exception e) {
+            System.err.println("Error parsing OAuth response: " + e.getMessage());
+        }
+
+        return response;
     }
 
     private void updateUserBasedOnEmployee(User user, Employee employee) {

@@ -1,5 +1,7 @@
 package com.windowprogramming.ClothingStoreManager.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.ChangePasswordRequest;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.LoginRequest;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.RegistrationRequest;
@@ -15,10 +17,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.List;
 
@@ -42,6 +50,8 @@ public class AuthenticationController {
     @NonFinal
     @Value("${app.controller.user.response.delete.success}")
     String DELETE_SUCCESS;
+
+
 
     @PostMapping("/login")
     @Operation(summary = "Login user",
@@ -107,6 +117,14 @@ public class AuthenticationController {
         return ApiResponse.<UserResponse>builder()
                 .data(authenticationService.updateUser(userUpdateRequest))
                 .build();
+    }
+
+
+    @GetMapping("/grantcode")
+    public void grantCode(@RequestParam("code") String code, @RequestParam("scope") String scope) {
+        System.out.println("Authorization code: " + code);
+        System.out.println("Scope: " + scope);
+        authenticationService.getOauthAccessTokenGoogle(code);
     }
 
 

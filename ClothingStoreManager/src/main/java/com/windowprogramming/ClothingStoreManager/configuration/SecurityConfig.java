@@ -30,15 +30,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @NonFinal
     String[] PUBLIC_POST_ENDPOINTS = {
-            "/auth/login"
-            // "/auth/register" // remove after development
+            "/auth/login",
+            "/auth/register",
+            "/auth/grantcode"
     };
 
 
     @NonFinal
     String[] PUBLIC_GET_ENDPOINTS = {
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/auth/grantcode"
     };
 
     @Autowired

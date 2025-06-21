@@ -15,4 +15,5 @@ public interface AuthenticationService {
     UserResponse getCurrentUser();
     UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     List<UserResponse> getAllUsers();
+    String getOauthAccessTokenGoogle(String code);
 }
