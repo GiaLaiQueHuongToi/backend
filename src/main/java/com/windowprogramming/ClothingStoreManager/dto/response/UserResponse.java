@@ -20,7 +20,7 @@ public class UserResponse {
 
     String username;
 
-    EmployeeResponse employee;
+    // EmployeeResponse employee;
 
     String phoneNumber;
 

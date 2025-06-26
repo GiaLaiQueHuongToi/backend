@@ -27,7 +27,7 @@ public class RegistrationRequest {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&*(){}\\[\\]!~`|])(?=.*\\d).*$", message = "INVALID_PASSWORD")
     String password;
 
-    Long employeeId;
+    // Long employeeId;
 
 //    String phoneNumber;
 //

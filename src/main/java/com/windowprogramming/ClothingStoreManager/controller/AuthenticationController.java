@@ -71,7 +71,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @Operation(summary = "Register user",
             description = "Register user")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public ApiResponse<UserResponse> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return ApiResponse.<UserResponse>builder()
                 .data(authenticationService.register(registrationRequest))

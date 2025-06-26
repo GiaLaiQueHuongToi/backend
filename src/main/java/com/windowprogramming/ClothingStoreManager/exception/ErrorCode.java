@@ -113,7 +113,6 @@ public enum ErrorCode {
     TOKEN_EXPIRED(8001, HttpStatus.UNAUTHORIZED, "Token expired"),
     REFRESH_TOKEN_FAILED(8002, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to refresh token");
 
-
     final Integer code;
     final HttpStatus status;
     final String message;

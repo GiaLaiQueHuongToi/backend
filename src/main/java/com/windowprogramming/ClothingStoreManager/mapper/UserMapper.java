@@ -14,14 +14,14 @@ public interface UserMapper {
 
     // specify which fields of the target object should be ignored
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "employee", ignore = true)
+    // @Mapping(target = "employee", ignore = true)
     User toUser(RegistrationRequest request);
 
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "employee", ignore = true)
+    // @Mapping(target = "employee", ignore = true)
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "employee", ignore = true)
+    // @Mapping(target = "employee", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

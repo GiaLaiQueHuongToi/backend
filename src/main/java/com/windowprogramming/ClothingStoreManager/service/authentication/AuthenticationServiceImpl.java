@@ -5,17 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.windowprogramming.ClothingStoreManager.dto.request.authentication.*;
 import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
-import com.windowprogramming.ClothingStoreManager.entity.Employee;
 import com.windowprogramming.ClothingStoreManager.entity.Role;
 import com.windowprogramming.ClothingStoreManager.entity.Token;
 import com.windowprogramming.ClothingStoreManager.entity.User;
 import com.windowprogramming.ClothingStoreManager.enums.RoleName;
 import com.windowprogramming.ClothingStoreManager.exception.AppException;
 import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
-import com.windowprogramming.ClothingStoreManager.mapper.EmployeeMapper;
+
 import com.windowprogramming.ClothingStoreManager.mapper.RoleMapper;
 import com.windowprogramming.ClothingStoreManager.mapper.UserMapper;
-import com.windowprogramming.ClothingStoreManager.repository.EmployeeRepository;
 import com.windowprogramming.ClothingStoreManager.repository.RoleRepository;
 import com.windowprogramming.ClothingStoreManager.repository.TokenRepository;
 import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
@@ -25,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -54,15 +51,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String clientSecret;
 
     UserRepository userRepository;
-    RoleRepository roleRepository;
-    EmployeeRepository employeeRepository;
+    RoleRepository roleRepository;;
     TokenRepository tokenRepository;
 
     PasswordEncoder passwordEncoder;
     JWTUtils jwtUtils;
     UserMapper userMapper;
     RoleMapper roleMapper;
-    EmployeeMapper employeeMapper;
+//    EmployeeMapper employeeMapper;
 
 
     @Override
@@ -86,7 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserResponse buildUserResponse(User user){
         UserResponse userResponse = userMapper.toUserResponse(user);
         userResponse.setRole(roleMapper.toRoleResponse(user.getRole()));
-        userResponse.setEmployee((user.getEmployee() != null) ? employeeMapper.toEmployeeResponse(user.getEmployee()) : null);
+//        userResponse.setEmployee((user.getEmployee() != null) ? employeeMapper.toEmployeeResponse(user.getEmployee()) : null);
         return userResponse;
     }
 
@@ -102,21 +98,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         user.setRole(role);
 
-        Employee employee = null;
-        if(registrationRequest.getRole() == RoleName.USER) {
-            if(registrationRequest.getEmployeeId() == null) {
-                throw new AppException(ErrorCode.REQUIRED_EMPLOYEE_ID);
-            }
-            else {
-                employee = employeeRepository.findById(registrationRequest.getEmployeeId())
-                        .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_FOUND));
-                if(userRepository.existsByEmployee(employee)) {
-                    throw new AppException(ErrorCode.EMPLOYEE_ALREADY_HAS_USER);
-                }
-            }
-        }
-        user.setEmployee(employee);
-        updateUserBasedOnEmployee(user, employee);
+//        Employee employee = null;
+//        if(registrationRequest.getRole() == RoleName.USER) {
+//            if(registrationRequest.getEmployeeId() == null) {
+//                throw new AppException(ErrorCode.REQUIRED_EMPLOYEE_ID);
+//            }
+//            else {
+//                employee = employeeRepository.findById(registrationRequest.getEmployeeId())
+//                        .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_FOUND));
+//                if(userRepository.existsByEmployee(employee)) {
+//                    throw new AppException(ErrorCode.EMPLOYEE_ALREADY_HAS_USER);
+//                }
+//            }
+//        }
+//        user.setEmployee(employee);
+//        updateUserBasedOnEmployee(user, employee);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -179,11 +175,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUser(user, userUpdateRequest);
 
-        Employee employee = user.getEmployee();
-        if(employee != null) {
-            updateEmployeeBasedOnUser(employee, user);
-            employeeRepository.save(employee);
-        }
+//        Employee employee = user.getEmployee();
+//        if(employee != null) {
+//            updateEmployeeBasedOnUser(employee, user);
+//            employeeRepository.save(employee);
+//        }
 
         userRepository.save(user);
         return buildUserResponse(user);
@@ -256,23 +252,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return response;
     }
 
-    private void updateUserBasedOnEmployee(User user, Employee employee) {
-        user.setPhoneNumber(employee.getPhoneNumber());
-        user.setEmail(employee.getEmail());
-        user.setDateOfBirth(employee.getDateOfBirth());
-        user.setAddress(employee.getAddress());
-        user.setArea(employee.getArea());
-        user.setWard(employee.getWard());
-    }
+//    private void updateUserBasedOnEmployee(User user, Employee employee) {
+//        user.setPhoneNumber(employee.getPhoneNumber());
+//        user.setEmail(employee.getEmail());
+//        user.setDateOfBirth(employee.getDateOfBirth());
+//        user.setAddress(employee.getAddress());
+//        user.setArea(employee.getArea());
+//        user.setWard(employee.getWard());
+//    }
 
-    private void updateEmployeeBasedOnUser(Employee employee, User user) {
-        employee.setPhoneNumber(user.getPhoneNumber());
-        employee.setEmail(user.getEmail());
-        employee.setDateOfBirth(user.getDateOfBirth());
-        employee.setAddress(user.getAddress());
-        employee.setArea(user.getArea());
-        employee.setWard(user.getWard());
-    }
+//    private void updateEmployeeBasedOnUser(Employee employee, User user) {
+//        employee.setPhoneNumber(user.getPhoneNumber());
+//        employee.setEmail(user.getEmail());
+//        employee.setDateOfBirth(user.getDateOfBirth());
+//        employee.setAddress(user.getAddress());
+//        employee.setArea(user.getArea());
+//        employee.setWard(user.getWard());
+//    }
 
 
 

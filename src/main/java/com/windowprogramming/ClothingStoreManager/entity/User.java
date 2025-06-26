@@ -33,9 +33,9 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id")
-    Employee employee;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "employee_id")
+//    Employee employee;
 
     @Column(name = "phonenumber")
     String phoneNumber;
