@@ -20,7 +20,7 @@ spring:
 
 # SERVER CONFIGURATION
 server:
-  port: 8080
+  port: ${PORT:8080}  # Correct syntax with default value
   #address: 0.0.0.0
 
 app:
@@ -80,3 +80,24 @@ google:
   client:
     id: ${GOOGLE_CLIENT_ID}
     secret: ${GOOGLE_CLIENT_SECRET}
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg - %X{request.method} %X{request.uri} %n"
+
+#logging:
+#  level:
+#    # Basic request processing logging
+#    org.springframework.web: DEBUG
+#    org.springframework.web.servlet.DispatcherServlet: DEBUG
+
+#    # For request/response body logging
+#    org.springframework.web.servlet.mvc.method.annotation: DEBUG
+#
+#    # Optional: For more detailed HTTP exchange logging
+#    org.springframework.http.codec: DEBUG
+#    org.springframework.web.reactive: DEBUG
+#    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
