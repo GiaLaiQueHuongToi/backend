@@ -284,27 +284,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return token.getAccessToken();
         }
 
+        throw new AppException(ErrorCode.TOKEN_EXPIRED);
         // Token expired, refresh it
-        try {
-            String newTokens = refreshGoogleToken(token.getRefreshToken());
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(newTokens);
-
-            if (rootNode.has("access_token")) {
-                String newAccessToken = rootNode.get("access_token").asText();
-
-                // Update token
-                token.setAccessToken(newAccessToken);
-                token.setCreatedAt(LocalDateTime.now());
-                tokenRepository.save(token);
-
-                return newAccessToken;
-            } else {
-                throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
-            }
-        } catch (Exception e) {
-            throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
-        }
+//        try {
+//            String newTokens = refreshGoogleToken(token.getRefreshToken());
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            JsonNode rootNode = objectMapper.readTree(newTokens);
+//
+//            if (rootNode.has("access_token")) {
+//                String newAccessToken = rootNode.get("access_token").asText();
+//
+//                // Update token
+//                token.setAccessToken(newAccessToken);
+//                token.setCreatedAt(LocalDateTime.now());
+//                tokenRepository.save(token);
+//
+//                return newAccessToken;
+//            } else {
+//                throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
+//            }
+//        } catch (Exception e) {
+//            throw new AppException(ErrorCode.REFRESH_TOKEN_FAILED);
+//        }
     }
 
     @Override
@@ -334,5 +335,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String url = "https://oauth2.googleapis.com/token";
         return restTemplate.postForObject(url, requestEntity, String.class);
+    }
+
+    @Override
+    public void storeOAuthTokens(TokenStoreRequest tokenStoreRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        storeTokens(user.getId(), tokenStoreRequest.getAccessToken(), tokenStoreRequest.getRefreshToken());
     }
 }

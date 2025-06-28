@@ -3,14 +3,12 @@ package com.windowprogramming.ClothingStoreManager.controller;
 import com.cloudinary.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.ChangePasswordRequest;
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.LoginRequest;
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.RegistrationRequest;
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.UserUpdateRequest;
+import com.windowprogramming.ClothingStoreManager.dto.request.authentication.*;
 import com.windowprogramming.ClothingStoreManager.dto.response.ApiResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
 import com.windowprogramming.ClothingStoreManager.entity.User;
+import com.windowprogramming.ClothingStoreManager.exception.AppException;
 import com.windowprogramming.ClothingStoreManager.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -145,6 +143,35 @@ public class AuthenticationController {
 
         return ApiResponse.<Map<String, String>>builder()
                 .data(response)
+                .build();
+    }
+
+    @PostMapping("/store-token")
+    @Operation(summary = "Store OAuth tokens",
+            description = "Store OAuth tokens for the current authenticated user")
+    public ApiResponse<Void> storeTokens(@Valid @RequestBody TokenStoreRequest tokenStoreRequest) {
+        authenticationService.storeOAuthTokens(tokenStoreRequest);
+        return ApiResponse.<Void>builder()
+                .message("Tokens stored successfully")
+                .code(1000)
+                .build();
+    }
+
+    @GetMapping("/youtube-access-token")
+    @Operation(summary = "Get YouTube access token",
+            description = "Retrieve the stored access token or refresh if expired")
+    public ApiResponse<Map<String, String>> getYoutubeAccessToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        String accessToken = authenticationService.getAccessToken(user.getId());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", accessToken);
+
+        return ApiResponse.<Map<String, String>>builder()
+                .data(response)
+                .code(1000)
                 .build();
     }
 
