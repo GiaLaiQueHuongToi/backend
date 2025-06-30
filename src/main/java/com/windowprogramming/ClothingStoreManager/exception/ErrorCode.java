@@ -74,24 +74,11 @@ public enum ErrorCode {
     //    Existed Error 3xxx
     USER_EXISTED(3001, HttpStatus.BAD_REQUEST, "User existed"),
     USER_PROFILE_EXISTED(3002, HttpStatus.BAD_REQUEST, "User profile existed"),
-    EMPLOYEE_EXISTED(3003, HttpStatus.BAD_REQUEST, "Employee existed"),
-    BRANCH_EXISTED(3004, HttpStatus.BAD_REQUEST, "Branch existed"),
-    CATEGORY_EXISTED(3005, HttpStatus.BAD_REQUEST, "Category existed"),
-    PRODUCT_EXISTED(3006, HttpStatus.BAD_REQUEST, "Product existed"),
 
     //    Not Found Error 4xxx
     USER_NOT_FOUND(4001, HttpStatus.NOT_FOUND, "User not found"),
-    ROLE_NOT_FOUND(4002, HttpStatus.NOT_FOUND, "Role not found"),
-    USER_PROFILE_NOT_FOUND(4003, HttpStatus.NOT_FOUND, "User profile not found"),
-    PERMISSION_NOT_FOUND(4004, HttpStatus.NOT_FOUND, "Permission not found"),
-    EMPLOYEE_NOT_FOUND(4005,HttpStatus.NOT_FOUND, "Employee not found" ),
-    BRAND_NOT_FOUND(4006, HttpStatus.NOT_FOUND, "Brand not found"),
-    CATEGORY_NOT_FOUND(4007, HttpStatus.NOT_FOUND, "Category not found"),
-    PRODUCT_NOT_FOUND(4008, HttpStatus.NOT_FOUND, "Product not found"),
-    INVOICE_NOT_FOUND(4009, HttpStatus.NOT_FOUND, "Invoice not found"),
-    CUSTOMER_NOT_FOUND(4010, HttpStatus.NOT_FOUND, "Customer not found"),
-    INVOICE_DETAIL_NOT_FOUND(4011, HttpStatus.NOT_FOUND, "Invoice detail not found"),
-    BRANCH_NOT_FOUND(4012, HttpStatus.NOT_FOUND, "Branch not found"),
+    VIDEO_NOT_FOUND(4002, HttpStatus.NOT_FOUND, "Video not found"),
+    ROLE_NOT_FOUND(4003, HttpStatus.NOT_FOUND, "Role not found"),
 
     //    Unauthorized	Client	5xxx (Unauthenticated error)
     INVALID_TOKEN(5001, HttpStatus.UNAUTHORIZED, "Invalid token"),
