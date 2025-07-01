@@ -20,7 +20,7 @@ spring:
 
 # SERVER CONFIGURATION
 server:
-  port: ${PORT:8080}  # Correct syntax with default value
+  port: ${PORT:8081}  # Correct syntax with default value
   #address: 0.0.0.0
 
 app:

@@ -1,11 +1,14 @@
 package com.windowprogramming.ClothingStoreManager.service.video;
 
+import com.windowprogramming.ClothingStoreManager.dto.request.CreateVideoRequest;
 import com.windowprogramming.ClothingStoreManager.dto.response.PageResponse;
 import com.windowprogramming.ClothingStoreManager.dto.response.VideoResponse;
+import com.windowprogramming.ClothingStoreManager.entity.User;
 import com.windowprogramming.ClothingStoreManager.entity.Video;
 import com.windowprogramming.ClothingStoreManager.exception.AppException;
 import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
 import com.windowprogramming.ClothingStoreManager.mapper.VideoMapper;
+import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
 import com.windowprogramming.ClothingStoreManager.repository.VideoRepository;
 import io.jsonwebtoken.lang.Collections;
 import lombok.AccessLevel;
@@ -19,6 +22,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +34,7 @@ import java.util.stream.Collectors;
 public class VideoServiceImpl implements VideoService{
     VideoRepository videoRepository;
     VideoMapper videoMapper;
+    UserRepository userRepository;
 
 //    @Override
 //    public PageResponse<VideoResponse> getAllVideos(int page, int size) {
@@ -111,5 +117,50 @@ public class VideoServiceImpl implements VideoService{
                 .description("Discover the latest trends in web development.")
                 .createdAt("2025-05-20")
                 .build();
+    }
+
+    @Override
+    public VideoResponse createVideo(CreateVideoRequest request) {
+        // Get current user from security context
+        SecurityContext context = SecurityContextHolder.getContext();
+        User user = null;
+        
+        if (context.getAuthentication() != null && context.getAuthentication().getPrincipal() instanceof User) {
+            // Principal is a User object
+            user = (User) context.getAuthentication().getPrincipal();
+        } else if (context.getAuthentication() != null && context.getAuthentication().getPrincipal() instanceof Long) {
+            // Principal is a Long (user ID)
+            Long userId = (Long) context.getAuthentication().getPrincipal();
+            user = userRepository.findById(userId)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        }
+        
+        if (user == null) {
+            // For demo/testing: use the first available user when no authentication
+            user = userRepository.findAll().stream().findFirst()
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        }
+
+        // Map request to entity
+        Video video = videoMapper.toVideo(request);
+        video.setUser(user);
+
+        // Ensure fields don't exceed database limits
+        if (video.getTitle() != null && video.getTitle().length() > 255) {
+            video.setTitle(video.getTitle().substring(0, 252) + "...");
+        }
+        
+        if (video.getDescription() != null && video.getDescription().length() > 1000) {
+            video.setDescription(video.getDescription().substring(0, 997) + "...");
+        }
+
+        // Save video
+        Video savedVideo = videoRepository.save(video);
+
+        // Convert entity to response
+        VideoResponse response = videoMapper.toVideoResponse(savedVideo);
+        response.setCreatedAt(savedVideo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        
+        return response;
     }
 }
