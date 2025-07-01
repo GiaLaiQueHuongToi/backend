@@ -1,8 +1,8 @@
-package com.windowprogramming.ClothingStoreManager.service;
+package com.autoreels.AutoReels.service;
 
-import com.windowprogramming.ClothingStoreManager.exception.AppException;
-import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
-import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
+import com.autoreels.AutoReels.exception.AppException;
+import com.autoreels.AutoReels.exception.ErrorCode;
+import com.autoreels.AutoReels.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

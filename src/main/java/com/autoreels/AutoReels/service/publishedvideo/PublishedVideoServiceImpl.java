@@ -1,6 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.service.publishedvideo;
+package com.autoreels.AutoReels.service.publishedvideo;
 
-import com.windowprogramming.ClothingStoreManager.repository.PublishedVideoRepository;
+import com.autoreels.AutoReels.repository.PublishedVideoRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

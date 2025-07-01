@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.dto.request.authentication;
+package com.autoreels.AutoReels.dto.request.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

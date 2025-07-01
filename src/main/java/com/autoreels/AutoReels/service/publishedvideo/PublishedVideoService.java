@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.service.publishedvideo;
+package com.autoreels.AutoReels.service.publishedvideo;
 
 public interface PublishedVideoService {
 }

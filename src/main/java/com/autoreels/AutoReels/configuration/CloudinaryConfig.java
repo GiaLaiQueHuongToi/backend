@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;

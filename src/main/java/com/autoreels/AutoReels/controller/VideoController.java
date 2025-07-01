@@ -1,10 +1,10 @@
-package com.windowprogramming.ClothingStoreManager.controller;
+package com.autoreels.AutoReels.controller;
 
-import com.windowprogramming.ClothingStoreManager.dto.request.CreateVideoRequest;
-import com.windowprogramming.ClothingStoreManager.dto.response.ApiResponse;
-import com.windowprogramming.ClothingStoreManager.dto.response.PageResponse;
-import com.windowprogramming.ClothingStoreManager.dto.response.VideoResponse;
-import com.windowprogramming.ClothingStoreManager.service.video.VideoService;
+import com.autoreels.AutoReels.dto.request.CreateVideoRequest;
+import com.autoreels.AutoReels.dto.response.ApiResponse;
+import com.autoreels.AutoReels.dto.response.PageResponse;
+import com.autoreels.AutoReels.dto.response.VideoResponse;
+import com.autoreels.AutoReels.service.video.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;

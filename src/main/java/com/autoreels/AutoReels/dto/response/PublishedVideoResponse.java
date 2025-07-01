@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.dto.response;
+package com.autoreels.AutoReels.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
@@ -15,9 +15,6 @@ import lombok.experimental.FieldDefaults;
 public class PublishedVideoResponse {
     Long id;
     String title;
-    String videoUrl; // cloudinary url
-    String status; // draft, published
-    String thumbnail;
     Long views;
     String description;
     String createdAt;

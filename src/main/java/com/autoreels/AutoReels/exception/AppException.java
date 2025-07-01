@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.exception;
+package com.autoreels.AutoReels.exception;
 
 import lombok.AccessLevel;
 import lombok.Builder;

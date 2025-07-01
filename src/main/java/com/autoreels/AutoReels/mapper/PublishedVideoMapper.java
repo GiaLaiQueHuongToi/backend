@@ -1,7 +1,7 @@
-package com.windowprogramming.ClothingStoreManager.mapper;
+package com.autoreels.AutoReels.mapper;
 
-import com.windowprogramming.ClothingStoreManager.dto.response.PublishedVideoResponse;
-import com.windowprogramming.ClothingStoreManager.entity.PublishedVideo;
+import com.autoreels.AutoReels.dto.response.PublishedVideoResponse;
+import com.autoreels.AutoReels.entity.PublishedVideo;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 

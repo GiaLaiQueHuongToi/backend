@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.enums;
+package com.autoreels.AutoReels.enums;
 
 import lombok.AccessLevel;
 import lombok.Getter;

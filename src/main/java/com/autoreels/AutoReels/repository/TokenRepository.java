@@ -1,6 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.repository;
+package com.autoreels.AutoReels.repository;
 
-import com.windowprogramming.ClothingStoreManager.entity.Token;
+import com.autoreels.AutoReels.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

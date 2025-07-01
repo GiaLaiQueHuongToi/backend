@@ -8,10 +8,10 @@
 		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.windowprogramming</groupId>
-	<artifactId>ClothingStoreManager</artifactId>
+	<groupId>com.autoreels</groupId>
+	<artifactId>AutoReels</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ClothingStoreManager</name>
+	<name>AutoReels</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

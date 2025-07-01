@@ -1,7 +1,7 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
-import com.windowprogramming.ClothingStoreManager.service.CustomUserDetailsService;
-import com.windowprogramming.ClothingStoreManager.utils.JWTUtils;
+import com.autoreels.AutoReels.service.CustomUserDetailsService;
+import com.autoreels.AutoReels.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

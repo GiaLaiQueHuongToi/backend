@@ -1,9 +1,9 @@
-package com.windowprogramming.ClothingStoreManager.service;
+package com.autoreels.AutoReels.service;
 
 import com.cloudinary.Cloudinary;
-import com.windowprogramming.ClothingStoreManager.dto.response.CloudinaryResponse;
-import com.windowprogramming.ClothingStoreManager.exception.AppException;
-import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
+import com.autoreels.AutoReels.dto.response.CloudinaryResponse;
+import com.autoreels.AutoReels.exception.AppException;
+import com.autoreels.AutoReels.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.utils;
+package com.autoreels.AutoReels.utils;
 
 public class IsExistingParamUtils {
     public static boolean isExistingParam (Object param) {

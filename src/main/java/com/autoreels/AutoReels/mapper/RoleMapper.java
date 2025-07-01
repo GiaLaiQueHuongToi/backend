@@ -1,9 +1,8 @@
-package com.windowprogramming.ClothingStoreManager.mapper;
+package com.autoreels.AutoReels.mapper;
 
-import com.windowprogramming.ClothingStoreManager.dto.response.RoleResponse;
-import com.windowprogramming.ClothingStoreManager.entity.Role;
+import com.autoreels.AutoReels.dto.response.RoleResponse;
+import com.autoreels.AutoReels.entity.Role;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

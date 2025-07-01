@@ -1,6 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.exception;
+package com.autoreels.AutoReels.exception;
 
-import com.windowprogramming.ClothingStoreManager.dto.response.ApiResponse;
+import com.autoreels.AutoReels.dto.response.ApiResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;

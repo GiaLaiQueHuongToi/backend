@@ -1,6 +1,6 @@
-//package com.windowprogramming.ClothingStoreManager.utils;
+//package com.autoreels.AutoReels.utils;
 //
-//import com.windowprogramming.ClothingStoreManager.repository.ProductRepository;
+//import com.autoreels.AutoReels.repository.ProductRepository;
 //import org.hibernate.HibernateException;
 //import org.hibernate.engine.spi.SharedSessionContractImplementor;
 //import org.hibernate.id.IdentifierGenerator;

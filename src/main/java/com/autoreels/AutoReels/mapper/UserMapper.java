@@ -1,9 +1,9 @@
-package com.windowprogramming.ClothingStoreManager.mapper;
+package com.autoreels.AutoReels.mapper;
 
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.RegistrationRequest;
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.UserUpdateRequest;
-import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
-import com.windowprogramming.ClothingStoreManager.entity.User;
+import com.autoreels.AutoReels.dto.request.authentication.RegistrationRequest;
+import com.autoreels.AutoReels.dto.request.authentication.UserUpdateRequest;
+import com.autoreels.AutoReels.dto.response.UserResponse;
+import com.autoreels.AutoReels.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -1,7 +1,7 @@
-package com.windowprogramming.ClothingStoreManager.repository;
+package com.autoreels.AutoReels.repository;
 
-import com.windowprogramming.ClothingStoreManager.entity.Role;
-import com.windowprogramming.ClothingStoreManager.enums.RoleName;
+import com.autoreels.AutoReels.entity.Role;
+import com.autoreels.AutoReels.enums.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

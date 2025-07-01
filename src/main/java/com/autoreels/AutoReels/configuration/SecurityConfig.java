@@ -1,6 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
-import com.windowprogramming.ClothingStoreManager.service.CustomUserDetailsService;
+import com.autoreels.AutoReels.service.CustomUserDetailsService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

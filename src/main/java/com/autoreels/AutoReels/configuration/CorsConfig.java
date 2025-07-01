@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

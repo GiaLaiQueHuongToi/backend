@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager;
+package com.autoreels.AutoReels;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

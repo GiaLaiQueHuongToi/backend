@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.dto.response;
+package com.autoreels.AutoReels.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

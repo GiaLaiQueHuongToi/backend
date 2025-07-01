@@ -1,10 +1,10 @@
-package com.windowprogramming.ClothingStoreManager.configuration;
+package com.autoreels.AutoReels.configuration;
 
-import com.windowprogramming.ClothingStoreManager.entity.Role;
-import com.windowprogramming.ClothingStoreManager.entity.User;
-import com.windowprogramming.ClothingStoreManager.enums.RoleName;
-import com.windowprogramming.ClothingStoreManager.repository.RoleRepository;
-import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
+import com.autoreels.AutoReels.entity.Role;
+import com.autoreels.AutoReels.entity.User;
+import com.autoreels.AutoReels.enums.RoleName;
+import com.autoreels.AutoReels.repository.RoleRepository;
+import com.autoreels.AutoReels.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

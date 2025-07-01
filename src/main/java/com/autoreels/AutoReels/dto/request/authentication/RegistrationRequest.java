@@ -1,8 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.dto.request.authentication;
+package com.autoreels.AutoReels.dto.request.authentication;
 
-import com.windowprogramming.ClothingStoreManager.entity.Role;
-import com.windowprogramming.ClothingStoreManager.enums.RoleName;
-import jakarta.persistence.*;
+import com.autoreels.AutoReels.enums.RoleName;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -11,8 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter

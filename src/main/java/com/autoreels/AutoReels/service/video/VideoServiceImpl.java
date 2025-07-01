@@ -1,15 +1,15 @@
-package com.windowprogramming.ClothingStoreManager.service.video;
+package com.autoreels.AutoReels.service.video;
 
-import com.windowprogramming.ClothingStoreManager.dto.request.CreateVideoRequest;
-import com.windowprogramming.ClothingStoreManager.dto.response.PageResponse;
-import com.windowprogramming.ClothingStoreManager.dto.response.VideoResponse;
-import com.windowprogramming.ClothingStoreManager.entity.User;
-import com.windowprogramming.ClothingStoreManager.entity.Video;
-import com.windowprogramming.ClothingStoreManager.exception.AppException;
-import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
-import com.windowprogramming.ClothingStoreManager.mapper.VideoMapper;
-import com.windowprogramming.ClothingStoreManager.repository.UserRepository;
-import com.windowprogramming.ClothingStoreManager.repository.VideoRepository;
+import com.autoreels.AutoReels.dto.request.CreateVideoRequest;
+import com.autoreels.AutoReels.dto.response.PageResponse;
+import com.autoreels.AutoReels.dto.response.VideoResponse;
+import com.autoreels.AutoReels.entity.User;
+import com.autoreels.AutoReels.entity.Video;
+import com.autoreels.AutoReels.exception.AppException;
+import com.autoreels.AutoReels.exception.ErrorCode;
+import com.autoreels.AutoReels.mapper.VideoMapper;
+import com.autoreels.AutoReels.repository.UserRepository;
+import com.autoreels.AutoReels.repository.VideoRepository;
 import io.jsonwebtoken.lang.Collections;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

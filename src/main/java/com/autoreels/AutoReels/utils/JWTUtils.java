@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.utils;
+package com.autoreels.AutoReels.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

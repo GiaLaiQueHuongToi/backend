@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.dto.request.authentication;
+package com.autoreels.AutoReels.dto.request.authentication;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

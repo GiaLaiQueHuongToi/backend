@@ -1,6 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.entity;
+package com.autoreels.AutoReels.entity;
 
-import com.windowprogramming.ClothingStoreManager.enums.RoleName;
+import com.autoreels.AutoReels.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

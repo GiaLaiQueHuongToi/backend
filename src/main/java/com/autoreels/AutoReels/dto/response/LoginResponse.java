@@ -1,7 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.dto.response;
+package com.autoreels.AutoReels.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.windowprogramming.ClothingStoreManager.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

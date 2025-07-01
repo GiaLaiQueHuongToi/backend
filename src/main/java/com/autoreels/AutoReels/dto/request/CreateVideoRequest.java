@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.dto.request;
+package com.autoreels.AutoReels.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

@@ -1,7 +1,7 @@
-package com.windowprogramming.ClothingStoreManager.utils;
+package com.autoreels.AutoReels.utils;
 
-import com.windowprogramming.ClothingStoreManager.exception.AppException;
-import com.windowprogramming.ClothingStoreManager.exception.ErrorCode;
+import com.autoreels.AutoReels.exception.AppException;
+import com.autoreels.AutoReels.exception.ErrorCode;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;

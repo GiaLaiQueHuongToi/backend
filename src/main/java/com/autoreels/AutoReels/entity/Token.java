@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.entity;
+package com.autoreels.AutoReels.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

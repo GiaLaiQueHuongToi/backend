@@ -1,4 +1,4 @@
-package com.windowprogramming.ClothingStoreManager.entity;
+package com.autoreels.AutoReels.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +20,7 @@ public class PublishedVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="video_id", nullable = false)
     Video video;
 

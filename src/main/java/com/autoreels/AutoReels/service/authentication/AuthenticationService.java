@@ -1,8 +1,8 @@
-package com.windowprogramming.ClothingStoreManager.service.authentication;
+package com.autoreels.AutoReels.service.authentication;
 
-import com.windowprogramming.ClothingStoreManager.dto.request.authentication.*;
-import com.windowprogramming.ClothingStoreManager.dto.response.LoginResponse;
-import com.windowprogramming.ClothingStoreManager.dto.response.UserResponse;
+import com.autoreels.AutoReels.dto.request.authentication.*;
+import com.autoreels.AutoReels.dto.response.LoginResponse;
+import com.autoreels.AutoReels.dto.response.UserResponse;
 
 import java.util.List;
 

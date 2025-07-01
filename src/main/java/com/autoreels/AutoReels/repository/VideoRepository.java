@@ -1,7 +1,6 @@
-package com.windowprogramming.ClothingStoreManager.repository;
+package com.autoreels.AutoReels.repository;
 
-import aj.org.objectweb.asm.commons.Remapper;
-import com.windowprogramming.ClothingStoreManager.entity.Video;
+import com.autoreels.AutoReels.entity.Video;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

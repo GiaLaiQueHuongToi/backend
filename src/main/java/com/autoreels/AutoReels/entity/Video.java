@@ -1,12 +1,11 @@
-package com.windowprogramming.ClothingStoreManager.entity;
+package com.autoreels.AutoReels.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.joda.time.DateTime;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "videos")
 @Table(name = "videos")
@@ -26,6 +25,9 @@ public class Video {
     @JoinColumn(name="user_id", nullable = false)
     User user;
 
+    @OneToMany(mappedBy = "video")
+    List<PublishedVideo> publishedVideo;
+
     @Column
     String title;
 
@@ -33,10 +35,7 @@ public class Video {
     String videoUrl;
 
     @Column
-    String status; // draft, published
-
-//    @Column
-//    String thumbnail;
+    String status; // published, private
 
     @Column
     Long views = 0L;
