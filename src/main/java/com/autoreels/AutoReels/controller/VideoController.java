@@ -3,6 +3,7 @@ package com.autoreels.AutoReels.controller;
 import com.autoreels.AutoReels.dto.request.CreateVideoRequest;
 import com.autoreels.AutoReels.dto.response.ApiResponse;
 import com.autoreels.AutoReels.dto.response.PageResponse;
+import com.autoreels.AutoReels.dto.response.PublishedVideoResponse;
 import com.autoreels.AutoReels.dto.response.VideoResponse;
 import com.autoreels.AutoReels.service.video.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,5 +57,31 @@ public class VideoController {
                 .message("Video created successfully")
                 .build();
     }
+
+    @PostMapping("/publish")
+    @Operation(summary = "Publish a new video",
+               description = "Publishes a new video with the provided information.")
+    public ApiResponse<VideoResponse> publishVideo(@RequestParam Long videoId,
+                                                   @RequestParam String publicUrl,
+                                                   @RequestParam String publicId) {
+        VideoResponse videoResponse = videoService.publishVideo(videoId, publicUrl, publicId);
+        return ApiResponse.<VideoResponse>builder()
+                .data(videoResponse)
+                .message("Video published successfully")
+                .build();
+    }
+
+    @GetMapping("/{id}/published")
+    @Operation(summary = "Get published video information",
+            description = "Retrieves the publication details for a specific video by its ID.")
+    public ApiResponse<PublishedVideoResponse> getPublishedVideo(@PathVariable Long id) {
+        PublishedVideoResponse response = videoService.getPublishedVideoByVideoId(id);
+        return ApiResponse.<PublishedVideoResponse>builder()
+                .data(response)
+                .build();
+    }
+
+
+
 }
 

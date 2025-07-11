@@ -79,6 +79,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(4001, HttpStatus.NOT_FOUND, "User not found"),
     VIDEO_NOT_FOUND(4002, HttpStatus.NOT_FOUND, "Video not found"),
     ROLE_NOT_FOUND(4003, HttpStatus.NOT_FOUND, "Role not found"),
+    PUBLISHED_VIDEO_NOT_FOUND(4004, HttpStatus.NOT_FOUND, "Published video not found"),
 
     //    Unauthorized	Client	5xxx (Unauthenticated error)
     INVALID_TOKEN(5001, HttpStatus.UNAUTHORIZED, "Invalid token"),

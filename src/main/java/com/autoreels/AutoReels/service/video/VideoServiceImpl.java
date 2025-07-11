@@ -2,15 +2,17 @@ package com.autoreels.AutoReels.service.video;
 
 import com.autoreels.AutoReels.dto.request.CreateVideoRequest;
 import com.autoreels.AutoReels.dto.response.PageResponse;
+import com.autoreels.AutoReels.dto.response.PublishedVideoResponse;
 import com.autoreels.AutoReels.dto.response.VideoResponse;
+import com.autoreels.AutoReels.entity.PublishedVideo;
 import com.autoreels.AutoReels.entity.User;
 import com.autoreels.AutoReels.entity.Video;
 import com.autoreels.AutoReels.exception.AppException;
 import com.autoreels.AutoReels.exception.ErrorCode;
 import com.autoreels.AutoReels.mapper.VideoMapper;
+import com.autoreels.AutoReels.repository.PublishedVideoRepository;
 import com.autoreels.AutoReels.repository.UserRepository;
 import com.autoreels.AutoReels.repository.VideoRepository;
-import io.jsonwebtoken.lang.Collections;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ public class VideoServiceImpl implements VideoService{
     VideoRepository videoRepository;
     VideoMapper videoMapper;
     UserRepository userRepository;
+    PublishedVideoRepository publishedVideoRepository;
 
 //    @Override
 //    public PageResponse<VideoResponse> getAllVideos(int page, int size) {
@@ -56,46 +58,95 @@ public class VideoServiceImpl implements VideoService{
 //                .build();
 //    }
 
+//    @Override
+//    public PageResponse<VideoResponse> getAllVideos(int page, int size) {
+//        List<VideoResponse> mockVideos = Arrays.asList(
+//                VideoResponse.builder()
+//                        .id(1L)
+//                        .title("Top 10 AI Trends in 2025")
+//                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
+//                        .status("published")
+//                        .views(1245L)
+//                        .description("Explore the top AI trends shaping the future.")
+//                        .createdAt("2025-05-28")
+//                        .build(),
+//                VideoResponse.builder()
+//                        .id(2L)
+//                        .title("How to Learn Programming Fast")
+//                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
+//                        .status("draft")
+//                        .views(876L)
+//                        .description("Tips and tricks to accelerate your programming journey.")
+//                        .createdAt("2025-05-25")
+//                        .build(),
+//                VideoResponse.builder()
+//                        .id(3L)
+//                        .title("The Future of Web Development")
+//                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
+//                        .status("published")
+//                        .views(543L)
+//                        .description("Discover the latest trends in web development.")
+//                        .createdAt("2025-05-20")
+//                        .build()
+//        );
+//
+//        return PageResponse.<VideoResponse>builder()
+//                .data(mockVideos)
+//                .page(page)
+//                .size(size)
+//                .totalElements(3L)
+//                .totalPages(1)
+//                .build();
+//    }
+
     @Override
     public PageResponse<VideoResponse> getAllVideos(int page, int size) {
-        List<VideoResponse> mockVideos = Arrays.asList(
-                VideoResponse.builder()
-                        .id(1L)
-                        .title("Top 10 AI Trends in 2025")
-                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
-                        .status("published")
-                        .views(1245L)
-                        .description("Explore the top AI trends shaping the future.")
-                        .createdAt("2025-05-28")
-                        .build(),
-                VideoResponse.builder()
-                        .id(2L)
-                        .title("How to Learn Programming Fast")
-                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
-                        .status("draft")
-                        .views(876L)
-                        .description("Tips and tricks to accelerate your programming journey.")
-                        .createdAt("2025-05-25")
-                        .build(),
-                VideoResponse.builder()
-                        .id(3L)
-                        .title("The Future of Web Development")
-                        .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
-                        .status("published")
-                        .views(543L)
-                        .description("Discover the latest trends in web development.")
-                        .createdAt("2025-05-20")
-                        .build()
-        );
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        // Get user id from security context
+        SecurityContext context = SecurityContextHolder.getContext();
+        User user = (User) context.getAuthentication().getPrincipal();
+
+        Page<Video> videoPage = videoRepository.findAllByUserId(user.getId(), pageable);
+        List<Video> videos = videoPage.getContent();
 
         return PageResponse.<VideoResponse>builder()
-                .data(mockVideos)
+                .data(videos.stream()
+                        .map(video -> {
+                            VideoResponse response = videoMapper.toVideoResponse(video);
+                            response.setCreatedAt(formatDate(video.getCreatedAt()));
+                            return response;
+                        })
+                        .collect(Collectors.toList()))
                 .page(page)
                 .size(size)
-                .totalElements(3L)
-                .totalPages(1)
+                .totalElements(videoPage.getTotalElements())
+                .totalPages(videoPage.getTotalPages())
                 .build();
     }
+
+    @Override
+    public VideoResponse getVideoById(Long id) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        User user = (User) context.getAuthentication().getPrincipal();
+
+        Video video = videoRepository.findByIdAndUserId(id, user.getId())
+                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND));
+
+        VideoResponse response = videoMapper.toVideoResponse(video);
+        response.setCreatedAt(formatDate(video.getCreatedAt()));
+        return response;
+    }
+
+    // Utility method for formatting dates consistently
+    private String formatDate(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+
 
 //    @Override
 //    public VideoResponse getVideoById(Long id) {
@@ -106,18 +157,18 @@ public class VideoServiceImpl implements VideoService{
 //        return videoMapper.toVideoResponse(video);
 //    }
 
-    @Override
-    public VideoResponse getVideoById(Long id){
-        return VideoResponse.builder()
-                .id(3L)
-                .title("The Future of Web Development")
-                .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
-                .status("published")
-                .views(543L)
-                .description("Discover the latest trends in web development.")
-                .createdAt("2025-05-20")
-                .build();
-    }
+//    @Override
+//    public VideoResponse getVideoById(Long id){
+//        return VideoResponse.builder()
+//                .id(3L)
+//                .title("The Future of Web Development")
+//                .videoUrl("https://res.cloudinary.com/ddw1pv5un/video/upload/v1751248056/SampleVideo_1280x720_1mb_tvmarb.mp4")
+//                .status("published")
+//                .views(543L)
+//                .description("Discover the latest trends in web development.")
+//                .createdAt("2025-05-20")
+//                .build();
+//    }
 
     @Override
     public VideoResponse createVideo(CreateVideoRequest request) {
@@ -163,4 +214,62 @@ public class VideoServiceImpl implements VideoService{
         
         return response;
     }
+
+    @Override
+    public VideoResponse publishVideo(Long videoId, String publicUrl, String publicId) {
+        // Get current user from security context
+        SecurityContext context = SecurityContextHolder.getContext();
+        User user = (User) context.getAuthentication().getPrincipal();
+
+        // Find video by id and check if user owns it
+        Video video = videoRepository.findByIdAndUserId(videoId, user.getId())
+                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND));
+
+        // Create a new PublishedVideo record
+        PublishedVideo publishedVideo = PublishedVideo.builder()
+                .video(video)
+                .externalId(publicId)
+                .url(publicUrl)
+                .publishedAt(LocalDateTime.now())
+                .build();
+
+        // Save the published video record
+        publishedVideoRepository.save(publishedVideo);
+
+        // Update video status to published
+        video.setStatus("published");
+        Video savedVideo = videoRepository.save(video);
+
+        // Convert entity to response
+        VideoResponse response = videoMapper.toVideoResponse(savedVideo);
+        response.setCreatedAt(formatDate(savedVideo.getCreatedAt()));
+
+        return response;
+    }
+
+    @Override
+    public PublishedVideoResponse getPublishedVideoByVideoId(Long videoId) {
+        // Get current user from security context
+        SecurityContext context = SecurityContextHolder.getContext();
+        User user = (User) context.getAuthentication().getPrincipal();
+
+        // First verify the video exists and belongs to the user
+        Video video = videoRepository.findByIdAndUserId(videoId, user.getId())
+                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND));
+
+        // Find the published video record
+        PublishedVideo publishedVideo = publishedVideoRepository.findByVideoId(videoId)
+                .orElseThrow(() -> new AppException(ErrorCode.PUBLISHED_VIDEO_NOT_FOUND));
+
+        // Convert to response DTO
+        return PublishedVideoResponse.builder()
+                .id(publishedVideo.getId())
+                .videoId(videoId)
+                .externalId(publishedVideo.getExternalId())
+                .url(publishedVideo.getUrl())
+                .publishedAt(formatDate(publishedVideo.getPublishedAt()))
+                .build();
+    }
+
+
 }
