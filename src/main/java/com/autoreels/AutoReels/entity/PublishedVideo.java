@@ -24,7 +24,7 @@ public class PublishedVideo {
     @JoinColumn(name="video_id", nullable = false)
     Video video;
 
-    @Column(name = "platform", nullable = false)
+    @Column(name = "platform")
     String platform; // e.g., YouTube, TikTok, Facebook
 
     @Column(name = "external_id", nullable = false)
